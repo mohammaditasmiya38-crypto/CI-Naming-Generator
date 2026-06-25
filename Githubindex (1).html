@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SAP CI Naming Generator — Volvo Group</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --volvo-black: #0a0a0a;
+  --volvo-dark: #1a1a2e;
+  --volvo-navy: #003057;
+  --volvo-blue: #0d47a1;
+  --volvo-steel: #2c3e50;
+  --volvo-gray: #546e7a;
+  --volvo-light: #78909c;
+  --volvo-silver: #b0bec5;
+  --volvo-snow: #eceff1;
+  --volvo-white: #f8f9fa;
+  --volvo-accent: #00a9e0;
+  --volvo-glow: rgba(0, 169, 224, 0.15);
+  --volvo-success: #00c853;
+  --volvo-warn: #ff6d00;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.12);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--volvo-snow);
+  color: var(--volvo-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Animated Background ── */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 30% 20%, rgba(0, 48, 87, 0.03) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(0, 169, 224, 0.04) 0%, transparent 50%);
+  animation: bgShift 20s ease-in-out infinite alternate;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes bgShift {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(-5%, 3%) rotate(2deg); }
+}
+
+/* ── Header ── */
+.header {
+  position: relative;
+  background: linear-gradient(135deg, var(--volvo-black) 0%, var(--volvo-navy) 50%, #001833 100%);
+  padding: 0;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(255,255,255,0.015) 80px, rgba(255,255,255,0.015) 81px),
+    repeating-linear-gradient(0deg, transparent, transparent 80px, rgba(255,255,255,0.015) 80px, rgba(255,255,255,0.015) 81px);
+  pointer-events: none;
+}
+
+.header-glow {
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.header-glow--1 {
+  top: -200px; right: -100px;
+  background: var(--volvo-accent);
+}
+
+.header-glow--2 {
+  bottom: -250px; left: -150px;
+  background: #1565c0;
+}
+
+.header-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 24px 44px;
+  text-align: center;
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+/* Volvo Official Logo */
+.volvo-logo {
+  height: 52px;
+  width: auto;
+  filter: drop-shadow(0 2px 12px rgba(0,169,224,0.2)) brightness(0) invert(1);
+  object-fit: contain;
+}
+
+.header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.header h1 span {
+  color: var(--volvo-accent);
+}
+
+.header .subtitle {
+  font-size: 15px;
+  color: rgba(255,255,255,0.6);
+  font-weight: 400;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.tag-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.65);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(4px);
+}
+
+.tag--accent {
+  background: rgba(0,169,224,0.15);
+  color: var(--volvo-accent);
+  border-color: rgba(0,169,224,0.2);
+}
+
+/* ── Main Container ── */
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 920px;
+  margin: -20px auto 60px;
+  padding: 0 20px;
+}
+
+/* ── Card ── */
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: var(--shadow);
+  padding: 32px;
+  margin-bottom: 20px;
+  transition: var(--transition);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.card--output {
+  background: linear-gradient(135deg, var(--volvo-navy) 0%, #001a33 100%);
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.card--output::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,0.02) 60px, rgba(255,255,255,0.02) 61px);
+  pointer-events: none;
+}
+
+/* ── Section Labels ── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--volvo-gray);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.section-label .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--volvo-accent);
+  box-shadow: 0 0 8px rgba(0,169,224,0.4);
+}
+
+/* ── Form Fields ── */
+label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--volvo-steel);
+  letter-spacing: 0.2px;
+}
+
+.vgac-small {
+  font-size: 10px;
+  color: var(--volvo-light);
+  font-style: italic;
+  font-weight: 400;
+}
+
+select, input[type="text"], .combo-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: inherit;
+  border: 1.5px solid #dde3ea;
+  background: var(--volvo-white);
+  color: var(--volvo-dark);
+  transition: var(--transition);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23546e7a' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+select:focus, input[type="text"]:focus, .combo-input:focus {
+  border-color: var(--volvo-accent);
+  box-shadow: 0 0 0 4px rgba(0, 169, 224, 0.12);
+  outline: none;
+  background-color: #fff;
+}
+
+/* ── Grid Layouts ── */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.cm-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* ── Combobox ── */
+.combo { position: relative; }
+
+.combo-input {
+  padding-right: 44px;
+}
+
+.combo-btn {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px; height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.combo-btn::after {
+  content: '';
+  width: 10px; height: 10px;
+  border-right: 2px solid var(--volvo-gray);
+  border-bottom: 2px solid var(--volvo-gray);
+  transform: rotate(45deg);
+  margin-top: -3px;
+  transition: transform 0.2s;
+}
+
+.combo.open .combo-btn::after {
+  transform: rotate(-135deg);
+  margin-top: 3px;
+}
+
+.combo-list {
+  position: absolute;
+  left: 0; right: 0;
+  top: calc(100% + 6px);
+  max-height: 240px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  padding: 6px;
+  z-index: 100;
+  display: none;
+  animation: dropIn 0.2s ease;
+}
+
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.combo.open .combo-list { display: block; }
+
+.combo-item {
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--volvo-steel);
+  transition: var(--transition);
+}
+
+.combo-item:hover, .combo-item.active {
+  background: rgba(0, 169, 224, 0.08);
+  color: var(--volvo-navy);
+}
+
+.combo-empty {
+  padding: 12px 14px;
+  color: var(--volvo-light);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ── Toggle Row (TD/BA/GF + Use Global) ── */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.toggle-row label {
+  margin: 0;
+  font-size: 13px;
+}
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--volvo-gray);
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-switch input[type="checkbox"] {
+  display: none;
+}
+
+.toggle-track {
+  width: 40px; height: 22px;
+  background: #dde3ea;
+  border-radius: 100px;
+  position: relative;
+  transition: var(--transition);
+}
+
+.toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 16px; height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  transition: var(--transition);
+}
+
+.toggle-switch input:checked + .toggle-track {
+  background: var(--volvo-accent);
+}
+
+.toggle-switch input:checked + .toggle-track::after {
+  left: 21px;
+}
+
+/* ── Hint ── */
+.hint {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--volvo-accent);
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  background: rgba(0, 169, 224, 0.06);
+  padding: 6px 12px;
+  border-radius: 8px;
+  border-left: 3px solid var(--volvo-accent);
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hint:empty { display: none; }
+
+/* ── Buttons ── */
+.btn-row {
+  margin-top: 28px;
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.3px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--volvo-navy), #004d7a);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0, 48, 87, 0.3);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 24px rgba(0, 48, 87, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--volvo-steel);
+  border: 1.5px solid #dde3ea;
+}
+
+.btn-outline:hover {
+  background: var(--volvo-white);
+  border-color: var(--volvo-silver);
+}
+
+/* ── Output Box ── */
+.output-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 16px;
+}
+
+.output-label .pulse {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--volvo-accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; box-shadow: 0 0 0 0 rgba(0,169,224,0.4); }
+  50% { opacity: 1; box-shadow: 0 0 0 8px rgba(0,169,224,0); }
+}
+
+.output-box {
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 24px;
+  border-radius: var(--radius-sm);
+  font-family: 'SF Mono', 'Fira Code', ui-monospace, Menlo, Consolas, monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+  overflow-x: auto;
+  width: 100%;
+  position: relative;
+  word-break: break-all;
+  white-space: normal;
+}
+
+.output-box span {
+  color: var(--volvo-accent);
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--volvo-dark);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast svg {
+  width: 18px; height: 18px;
+}
+
+/* ── Field Spacing ── */
+.field-group {
+  margin-top: 20px;
+}
+
+.field-group--inline {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* ── Utility ── */
+.hidden { display: none !important; }
+.hidden-row { display: none !important; }
+
+#sender, #receiver { text-transform: capitalize; }
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 12px;
+  color: var(--volvo-light);
+  font-weight: 400;
+}
+
+.footer a {
+  color: var(--volvo-accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--volvo-silver); border-radius: 100px; }
+::-webkit-scrollbar-thumb:hover { background: var(--volvo-light); }
+
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  .header-inner { padding: 36px 20px 32px; }
+  .header h1 { font-size: 24px; }
+  .grid-2, .cm-row, .field-group--inline { grid-template-columns: 1fr; }
+  .card { padding: 24px 20px; }
+  .container { margin-top: -12px; }
+  .tag-row { gap: 6px; }
+  .brand-row { gap: 12px; flex-wrap: wrap; }
+  .volvo-logo { height: 40px; }
+  .output-box { font-size: 15px; padding: 18px; }
+}
+
+/* ── Animations ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+  animation: fadeInUp 0.5s ease backwards;
+}
+
+.card:nth-child(2) { animation-delay: 0.1s; }
+</style>
+</head>
+<body>
+
+<!-- ═══ Header ═══ -->
+<div class="header">
+  <div class="header-glow header-glow--1"></div>
+  <div class="header-glow header-glow--2"></div>
+  <div class="header-inner">
+    <div class="brand-row">
+      <img class="volvo-logo" src="https://1000logos.net/wp-content/uploads/2020/03/Volvo-Logo.png" alt="Volvo Logo" />
+      <h1>SAP CI <span>Naming</span> Generator</h1>
+    </div>
+    <p class="subtitle">Generate naming conventions for Packages, iFlows and Pallets etc...</p>
+    <p class="subtitle" style="font-size: 13px; opacity: 0.8;">We have taken the sender and receiver from <a href="https://volvogroup.sharepoint.com/sites/app-vgac" target="_blank" class="tag tag--accent" style="text-decoration: none;"> VGAC </a></p>
+    <div class="tag-row">
+     
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Main Form ═══ -->
+<div class="container">
+
+  <!-- Card 1: Configuration -->
+  <div class="card">
+    <div class="section-label">
+      <span class="dot"></span>
+      Artifact Configuration
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <label>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+          Artifact Type
+        </label>
+        <select id="type">
+          <option value="">Select your Artifact</option>
+          <option value="Package">Package</option>
+          <option>Integration Flow</option>
+          <option>Value Mapping</option>
+          <option>OData Service</option>
+          <option>Content Modifier</option>
+          <option>Filter</option>
+          <option>Message Digest</option>
+          <option>Process</option>
+          <option>Local Process</option>
+          <option>Request-Reply</option>
+          <option>Content Enricher</option>
+          <option>Connector</option>
+          <option>Aggregator</option>
+          <option>Gather</option>
+          <option>Join</option>
+          <option>Script</option>
+          <option>Sequential Multicasting</option>
+          <option>Parallel Multicasting</option>
+          <option>Router</option>
+          <option>Data Store Operation</option>
+          <option>Queue</option>
+		  <option>Mapping</option>
+		  <option>Converter</option>
+		  <option>Splitter</option>
+		  <option>Decoder</option>
+		  <option>Encoder</option>
+		  <option>Send</option>
+		  <option>Process Call</option>
+		  <option>Persist</option>
+		  <option>Write Variable</option>
+         <option>XML Validator</option>
+		 <option>Decryptor</option>
+		 <option>Encryptor</option>
+		  <option>Signer</option>
+		   <option>Verifier</option>
+		 
+		 
+		 
+		  
+        </select>
+        <div id="hint" class="hint"></div>
+      </div>
+      <div>
+        <label>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2m-9-11h2m18 0h2m-4.2-6.8l-1.4 1.4M6.6 17.4l-1.4 1.4m0-13.6l1.4 1.4m10.8 10.8l1.4 1.4"/></svg>
+          Output Style
+        </label>
+        <input type="text" value="camelCase" disabled style="background: #f0f4f8; color: var(--volvo-gray); cursor: not-allowed; font-weight: 600;" />
+      </div>
+    </div>
+
+    <!-- TD/BA/GF -->
+    <div class="toggle-row" id="tdRow">
+      <label>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/></svg>
+        TD / BA / GF
+      </label>
+      <label class="toggle-switch">
+        <input id="useGlobal" type="checkbox">
+        <span class="toggle-track"></span>
+        Use Global
+      </label>
+    </div>
+    <div class="combo" id="buCombo">
+      <input class="combo-input" id="buInput" placeholder="Start typing or pick from suggestions..." autocomplete="off" />
+      <button class="combo-btn" type="button" tabindex="-1" aria-label="Toggle business unit list"></button>
+      <div class="combo-list" id="buList"></div>
+    </div>
+
+    <!-- Business Process -->
+    <div class="field-group" id="bpGroup">
+      <label>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Business Process
+      </label>
+      <div class="combo" id="bpCombo">
+        <input class="combo-input" id="bpInput" placeholder="Start typing — suggestions change with TD/BA/GF..." autocomplete="off" />
+        <button class="combo-btn" type="button" tabindex="-1" aria-label="Toggle business process list"></button>
+        <div class="combo-list" id="bpList"></div>
+      </div>
+    </div>
+
+    <!-- Sender / Receiver -->
+    <div id="senderReceiverGroup" class="field-group--inline">
+      <div>
+        <label>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
+          Sender <span class="vgac-small">(as per VGAC)</span>
+        </label>
+        <div class="combo" id="senderCombo">
+          <input class="combo-input" id="senderInput" placeholder="Type or select sender..." autocomplete="off" />
+          <button class="combo-btn" type="button"></button>
+          <div class="combo-list" id="senderList"></div>
+        </div>
+      </div>
+      <div>
+        <label>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Receiver <span class="vgac-small">(as per VGAC)</span>
+        </label>
+        <div class="combo" id="receiverCombo">
+          <input class="combo-input" id="receiverInput" placeholder="Type or select receiver..." autocomplete="off" />
+          <button class="combo-btn" type="button"></button>
+          <div class="combo-list" id="receiverList"></div>
+        </div>
+      </div>
+    </div>
+	
+    <!-- Splitter Fields -->
+<div id="splitterFields" class="field-group--inline" style="display:none;">
+
+  <!-- Method -->
+  <div>
+    <label>Splitter Method</label>
+    <select id="splitMethod">
+      <option value="General">General</option>
+      <option value="Iterating">Iterating</option>
+      <option value="IDoc">IDoc</option>
+      <option value="PKC7CMS">PKC7/CMS</option>
+    </select>
+  </div>
+</div>
+
+	<!-- Script Language -->
+	<div id="scriptLangBlock" class="field-group" style="display:none;">
+		<label>
+			<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+			Script Language
+		</label>
+		<select id="scriptLang">
+			<option value="Groovy">Groovy</option>
+			<option value="Java">Java</option>
+		</select>
+	</div>
+	
+	<!-- Interface Description -->
+    <div id="descBlock" class="field-group">
+      <label>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Interface Description
+      </label>
+      <input type="text" id="desc" placeholder="Invoicing, AccountInfo, etc." />
+    </div>
+	
+	<!-- Encoder / Decoder Fields -->
+	<div id="codecFields" class="field-group--inline" style="display:none;">
+
+	  <!-- Schema -->
+	  <div>
+		<label>Schema</label>
+		<select id="codecSchema">
+		  <option value="Base64">Base64</option>
+		  <option value="GZIP">GZIP</option>
+		  <option value="ZIP">ZIP</option>
+		  <option value="MIME">MIME</option>
+		</select>
+	  </div>
+
+	  <!-- Process Name -->
+	  <div>
+		<label>Process Name</label>
+		<input type="text" id="codecProcess" placeholder="Ex: AccountInfo" />
+	  </div>
+
+	</div>
+     <!-- Connector Fields -->
+<div id="connectorFields" class="field-group--inline" style="display:none;">
+
+ <div>
+  <label>Adapter Type</label>
+
+  <div class="combo" id="adapterCombo">
+    <input class="combo-input" id="adapterType"
+           placeholder="Type or select adapter..."
+           autocomplete="off" />
+    <button class="combo-btn" type="button"></button>
+    <div class="combo-list" id="adapterList"></div>
+  </div>
+
+</div>
+
+
+  <!-- Direction -->
+  <div>
+    <label>Direction</label>
+    <select id="direction">
+      <option value="Snd">Snd</option>
+      <option value="Rcv">Rcv</option>
+    </select>
+  </div>
+
+</div>
+
+<div id="connectorDescBlock" class="field-group" style="display:none;">
+  <label>Description</label>
+  <input type="text" id="connDesc" placeholder="Ex: PurchaseOrderCreate / Alerting" />
+</div>
+
+	
+	
+	
+	<!-- Send Fields -->
+<div id="sendFields" class="field-group" style="display:none;">
+  <label>Description</label>
+  <input type="text" id="sendDesc" placeholder="Ex: OrderProcessing" />
+</div>
+
+
+	<!-- Mapping Fields -->
+<div id="mappingFields" class="field-group--inline" style="display:none;">
+
+  <!-- Mapping Type -->
+  <div>
+    <label>Mapping Type</label>
+    <select id="mappingType">
+      <option value="MM">MM</option>
+      <option value="XSLT">XSLT</option>
+      <option value="OM">OM</option>
+    </select>
+  </div>
+
+  <!-- Source Type -->
+  <div>
+    <label>Source Type</label>
+    <input type="text" id="sourceType" placeholder="Ex: MaterialMasterCreateRequest" />
+  </div>
+
+</div>
+
+<div id="pcFields" class="field-group" style="display:none;">
+	  <label>Process Name</label>
+	  <input type="text" id="pcProcess" placeholder="Ex: Get Account number for Account Address info" />
+</div>
+
+<div id="mappingFields2" class="field-group" style="display:none; margin-top:10px;">
+  <label>Target Type</label>
+  <input type="text" id="targetType" placeholder="Ex: MATMAS / InvoiceConfirmation" />
+</div>
+
+<!-- Converter Fields -->
+<div id="converterFields" class="field-group--inline" style="display:none;">
+
+	  <!-- Source -->
+	  <div>
+		<label>Source Format</label>
+		<select id="convSource">
+		  <option>EDI</option>
+		  <option>JSON</option>
+		  <option>XML</option>
+		  <option>CSV</option>
+		</select>
+	  </div>
+
+	  <!-- Target -->
+	  <div>
+		<label>Target Format</label>
+		<select id="convTarget">
+		  <option>EDI</option>
+		  <option>JSON</option>
+		  <option>XML</option>
+		  <option>CSV</option>
+		</select>
+	  </div>
+
+	</div>
+	
+	
+
+
+	<div id="converterObjectBlock" class="field-group" style="display:none; margin-top:10px;">
+	  <label>Description</label>
+	  <input type="text" id="convObject" placeholder="Ex: PurchaseOrder" />
+	</div>
+	
+	
+	
+
+
+
+	
+	
+	
+	
+	
+
+
+
+    <!-- Content Modifier Fields -->
+    <div id="contentFields" class="cm-row" style="margin-top:20px; display:none;">
+      <div>
+        <label>Content</label>
+        <select id="content">
+          <option>Property</option>
+          <option>Header</option>
+          <option>Body</option>
+        </select>
+      </div>
+      <div>
+        <label>Description</label>
+        <input type="text" id="object" placeholder="Enter the description" />
+      </div>
+    </div>
+	
+	
+	
+	
+	<!-- Persist Fields -->
+	<!-- Existing (KEEP THIS) -->
+	
+	
+	<!-- Write Variable Fields -->
+<div id="varFields" class="field-group--inline" style="display:none;">
+
+  <!-- Option Type -->
+  <div>
+    <label>Option Type</label>
+    <select id="varType">
+      <option>Constant</option>
+      <option>Expression</option>
+      <option>Header</option>
+      <option>Property</option>
+      <option>XPath</option>
+    </select>
+  </div>
+
+  <!-- Description -->
+  <div>
+    <label>Description</label>
+    <input type="text" id="varDesc" placeholder="Ex: AccountID" />
+  </div>
+
+</div>
+
+
+<!-- Decryptor Fields -->
+<div id="decryptFields" class="field-group" style="display:none;">
+  <label>Key Type</label>
+  <input type="text" id="decryptKey" placeholder="Ex: PGP / AES / RSA" />
+</div>
+
+<!-- Encryptor Fields -->
+<div id="encryptFields" class="field-group" style="display:none;">
+  <label>Key Type</label>
+  <input type="text" id="encryptKey" placeholder="Ex: PGP / PKCS7" />
+</div>
+
+
+<!-- Signer Fields -->
+<div id="signFields" class="field-group" style="display:none;">
+  <label>Key Type</label>
+  <input type="text" id="signKey" placeholder="Ex: PKCS7 / PGP" />
+</div>
+
+
+<!-- Verifier Fields -->
+<div id="verifyFields" class="field-group" style="display:none;">
+  <label>Key Type</label>
+  <input type="text" id="verifyKey" placeholder="Ex: XML / PKCS7 / SimpleSigner" />
+</div>
+
+<!-- Data Store Fields -->
+<div id="dsFields" class="field-group--inline" style="display:none;">
+  <div>
+    <label>Operation</label>
+    <select id="dsOperation">
+      <option value="Write">Write</option>
+      <option value="Get">Get</option>
+      <option value="Delete">Delete</option>
+      <option value="Select">Select</option>
+    </select>
+  </div>
+  <div>
+    <label>Description</label>
+    <input type="text" id="dsProcess" placeholder="Ex: Customer Details" />
+  </div>
+</div>
+
+  
+	
+	
+
+    <!-- Buttons -->
+    <div class="btn-row">
+      <button class="btn btn-primary" type="button" onclick="copyText()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copy
+      </button>
+      <button class="btn btn-outline" type="button" onclick="resetForm()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- Card 2: Output -->
+  <div class="card card--output">
+    <div class="output-label">
+      <span class="pulse"></span>
+      Generated Name
+    </div>
+    <div class="output-box">
+      <span id="output">—</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="#00c853" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toastMsg">Copied to clipboard!</span>
+</div>
+
+<div class="footer">
+  Built for <a href="#">SAP Integration</a>
+</div>
+
+<script>
+// ====== Data ======
+const PARTY_OPTIONS = [
+  'SuccessFactors','SAPVGMF','BusMaster','VGHQBlackLine','SAPVGMF2.0','TM1','OneDigitalCore','VGCS','VITBS',
+  'SAPAribaSourcing','SAPAribaBuying','SAPCBW','SCOPE','PARTSLINQCRM','SparePartsCore','PARTSLINQSCM','PARTSLINQBW','VCEMOM','MIV',
+  'CreditPortal','VGSAPHRsolution','LESVC','BusMaster@Nova','SAPSIPRE','SAP@Prevost','SCOREFinancial','OCTOSCS','OCTOCPLV','PartnerDistribution','SAPBRIM'
+];
+
+const ADAPTER_OPTIONS = [
+  'SOAP','SFTP','IDoc','RFC','JMS','SuccessFactors','ODC',
+  'HTTP','Mail','AS2','OData','ProcessDirect',
+  'Ariba','LDAP','Twitter'
+];
+
+
+// ====== Helpers ======
+function firstLetterUpper(text) { if (!text) return ""; return text.charAt(0).toUpperCase() + text.slice(1); }
+function toFlatUpper(text) { return (text || "").replace(/\s+/g, "").toUpperCase(); }
+
+function toCamelCase(text) {
+  return text
+    .toLowerCase()
+    .split(" ")
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
+function normalizeName(name, style) {
+  let out = name.replace(/[^A-Za-z0-9]+/g, '_').replace(/_+/g, '_');
+  if (style === 'UPPERCASE') return out.toUpperCase();
+  return out;
+}
+
+function updateFieldVisibility() {
+  const type = document.getElementById("type").value;
+  
+  // 1. Define all possible field groups
+  const allGroups = [
+    "tdRow", "buCombo", "bpGroup", "senderReceiverGroup", "descBlock",
+    "scriptLangBlock", "codecFields", "connectorFields", "connectorDescBlock",
+    "sendFields", "mappingFields", "mappingFields2", "pcFields",
+    "converterFields", "converterObjectBlock", "splitterFields",
+    "contentFields", "varFields", "decryptFields", "encryptFields",
+    "signFields", "verifyFields", "dsFields"
+  ];
+
+  // 2. Hide everything first
+  allGroups.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
+  });
+
+  // 3. Standard set (TD/BA/GF, BU, BP, Sender/Receiver, Description)
+  const standardSet = ["tdRow", "buCombo", "bpGroup", "senderReceiverGroup", "descBlock"];
+
+  // 4. Mapping: Type -> Visible Groups
+  const visibilityMap = {
+    'Package': ["tdRow", "buCombo", "bpGroup", "descBlock"],
+    'Integration Flow': standardSet,
+    'OData Service': standardSet,
+    'Value Mapping': ["descBlock"],
+    'Content Modifier': ["contentFields"],
+    'Filter': ["descBlock"],
+    'Message Digest': ["descBlock"],
+    'Process': ["descBlock"],
+    'Local Process': ["descBlock"],
+    'Request-Reply': ["descBlock"],
+    'Content Enricher': ["descBlock"],
+    'Connector': ["connectorFields", "connectorDescBlock"],
+    'Aggregator': ["descBlock"],
+    'Gather': ["descBlock"],
+    'Join': ["descBlock"],
+    'Script': ["scriptLangBlock", "descBlock"],
+    'Sequential Multicasting': ["descBlock"],
+    'Parallel Multicasting': ["descBlock"],
+    'Router': ["descBlock"],
+    'Data Store Operation': ["dsFields"],
+    'Queue': ["descBlock"],
+    'Mapping': ["mappingFields", "mappingFields2"],
+    'Converter': ["converterFields", "converterObjectBlock"],
+    'Splitter': ["splitterFields", "descBlock"],
+    'Decoder': ["codecFields"],
+    'Encoder': ["codecFields"],
+    'Send': ["sendFields"],
+    'Process Call': ["pcFields"],
+    'Persist': ["descBlock"],
+    'Write Variable': ["varFields"],
+    'XML Validator': ["descBlock"],
+    'Decryptor': ["decryptFields"],
+    'Encryptor': ["encryptFields"],
+    'Signer': ["signFields"],
+    'Verifier': ["verifyFields"],
+  };
+
+  const visibleGroups = visibilityMap[type] || standardSet;
+  
+  // 5. Show the mapped groups
+  visibleGroups.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      // Use appropriate display type
+      if (id === "tdRow") el.style.display = "flex";
+      else if (["senderReceiverGroup", "mappingFields", "converterFields", "splitterFields", "codecFields", "connectorFields", "varFields"].includes(id)) {
+        el.style.display = "grid";
+      } else if (["contentFields"].includes(id)) {
+        el.style.display = "grid"; // it's cm-row
+      } else {
+        el.style.display = "block";
+      }
+    }
+  });
+}
+
+function setHint(type) {
+  const hints = {
+    'Package': 'VG_<TD/BA/GF>_<BusinessProcess>_<Desc>',
+    'Integration Flow': 'IF_<TD/BA/GF>_<BusinessProcess>_<SND>_To_<RCV>_<Desc>',
+    'OData Service': 'OD_<TD/BA/GF>_<BusinessProcess>_<SND>_To_<RCV>_<Desc>',
+    'Value Mapping': 'VM_<Desc>',
+    'Filter': 'FT_<Desc>',
+    'Message Digest': 'MD_<Desc>',
+    'Request-Reply': 'RR_<Desc>',
+    'Content Enricher': 'CE_<Desc>',
+    'Process Call': 'PC_<Desc>',
+    'Aggregator': 'AG_<Desc>',
+    'Gather': 'Gather_<Desc>',
+    'Join': 'Join_<Desc>',
+    'Sequential Multicasting': 'SM_<Desc>',
+    'Parallel Multicasting': 'PM_<Desc>',
+    'Router': 'Route_<Condition>',
+    'Process': 'IP_<Desc>',
+    'Script': 'Script_<Name>_<Desc>',
+    'Local Process': 'LIP_<Desc>',
+    'Content Modifier': 'CM_<Header/Property/Body>_<Desc>',
+	'Mapping': '<MM|XSLT|OM>_<Source>_to_<Target>',
+	'Converter': '<Source>_to_<Target>_Converter_<Desc>',
+	'Splitter': 'SP_<Method>_<Desc>',
+	'Decoder': 'DC_<Schema>_<Desc>',
+	'Encoder': 'EC_<Schema>_<Desc>',
+	'Send': 'Send_<Desc>',
+	'Process Call': 'PC_<Desc>',
+    'Persist': 'Persist_<Desc>',
+	'Write Variable': 'Var_<Type>_<Desc>',
+	'XML Validator': 'XMLValidate_<Desc>',
+	'Decryptor': 'Decrypt_<Key>',
+	'Encryptor': 'Encrypt_<Key>',
+	'Signer': 'Sign_<Key>',
+	'Verifier': 'Verify_<Key>',
+	'Connector': '<AdapterType>_<Direction>_<Desc>',
+	'Data Store Operation': 'DS_<Operation>_<ProcessName>',
+	'Queue': 'Queue_<Desc>'
+	
+	
+
+
+	
+  };
+  document.getElementById('hint').textContent = hints[type] || '';
+}
+
+// ====== BU Data ======
+const BU_OPTIONS = [
+  'GroupFinance','VCE','VolvoTrucks','MackTrucks','RenaultTrucks','VolvoBuses','VolvoPenta',
+  'VolvoFinancialServices','DTO','GroupP&C','TTI','VolvoEnergy','VolvoAutonomousSolutions',
+  'GroupCommunication','GroupL&C','GroupStrategicOffices'
+];
+
+const BU_PROCESSES = {
+  'GroupFinance': ['OrderToCash','RecordToReport','PurchaseToPay','DesignToOperate','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','PlanToControl','PlanToRepair','ProcureToRecord'],
+  'VCE': ['OrderToCash','ProcureToPay','DesignToOperate','RecordToReport','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','RecordToReport','PlanToControl','PlanToRepair'],
+  'VolvoTrucks': ['CompleteKnockDown','CompleteBuildupUnit','MakeToOrder','MakeToStock','DesignToOperate','OrderToCash','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','RecordToReport','PlanToControl','PlanToRepair','ProcureToRecord'],
+  'MackTrucks': ['DesignToOperate','OrderToCash','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','RecordToReport','PlanToControl','PlanToRepair','ProcureToRecord'],
+  'RenaultTrucks': ['DesignToOperate','OrderToCash','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','RecordToReport','PlanToControl','PlanToRepair','ProcureToRecord'],
+  'VolvoBuses': ['DesignToOperate','OrderToCash','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','RecordToReport','PlanToControl','PlanToRepair','ProcureToRecord'],
+  'VolvoPenta': ['DesignToOperate','OrderToCash','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','RecordToReport','PlanToControl','PlanToRepair','ProcureToRecord'],
+  'VolvoFinancialServices': ['DesignToOperate','OrderToCash','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','RecordToReport','PlanToControl','PlanToRepair','ProcureToRecord'],
+  'DTO': ['DesignToOperate','OrderToCash','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','RecordToReport','PlanToControl','PlanToRepair','ProcureToRecord'],
+  'GroupP&C': ['DesignToOperate','OrderToCash','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','RecordToReport','PlanToControl','PlanToRepair','ProcureToRecord'],
+  'TTI': ['DesignToOperate','OrderToCash','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','RecordToReport','PlanToControl','PlanToRepair','ProcureToRecord'],
+  'VolvoEnergy': ['DesignToOperate','OrderToCash','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','RecordToReport','PlanToControl','PlanToRepair','ProcureToRecord'],
+  'VolvoAutonomousSolutions': ['DesignToOperate','OrderToCash','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','RecordToReport','PlanToControl','PlanToRepair','ProcureToRecord'],
+  'GroupCommunication': ['DesignToOperate','OrderToCash','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','RecordToReport','PlanToControl','PlanToRepair','ProcureToRecord'],
+  'GroupL&C': ['DesignToOperate','OrderToCash','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','RecordToReport','PlanToControl','PlanToRepair','ProcureToRecord'],
+  'GroupStrategicOffices': ['DesignToOperate','OrderToCash','SourceToPay','PlanToProduce','ClaimToResponse','PlanToRelease','RecordToReport','PlanToControl','PlanToRepair','ProcureToRecord']
+};
+
+const BU_ALIASES = { 'groupfinance': 'GroupFinance', 'groupfinanace': 'GroupFinance', 'vce': 'VCE', 'volvotrucks': 'VolvoTrucks', 'volvo trucks': 'VolvoTrucks' };
+
+// ====== Helper to update BP options ======
+function updateBPList() {
+  const useGlobal = document.getElementById('useGlobal')?.checked ?? false;
+  if (useGlobal) {
+    const allProcesses = new Set();
+    Object.values(BU_PROCESSES).forEach(list => {
+      list.forEach(p => allProcesses.add(p));
+    });
+    bpCombo.setItems([...allProcesses].sort());
+  } else {
+    const raw = buCombo.value;
+    const norm = (raw || '').toLowerCase();
+    const canonical = BU_ALIASES[norm] || raw;
+    const options = BU_PROCESSES[canonical] || [];
+    bpCombo.setItems(options);
+  }
+}
+
+// ====== Combobox Factory ======
+function makeCombo(rootId, inputId, listId, options) {
+  const root = document.getElementById(rootId), input = document.getElementById(inputId), list = document.getElementById(listId);
+  let items = [...options]; let active = -1; let open = false;
+
+  function render(filter = '') {
+    const q = filter.trim().toLowerCase();
+    const filtered = items.filter(x => !q || x.toLowerCase().includes(q));
+    list.innerHTML = '';
+    if (filtered.length === 0) { list.innerHTML = '<div class="combo-empty">No matches found</div>'; return; }
+    filtered.forEach((text, idx) => {
+      const div = document.createElement('div');
+      div.className = 'combo-item' + (idx === active ? ' active' : '');
+      div.textContent = text;
+      div.addEventListener('mousedown', e => { e.preventDefault(); select(text); });
+      list.appendChild(div);
+    });
+  }
+
+  function openList() { root.classList.add('open'); open = true; render(''); }
+  function closeList() { root.classList.remove('open'); open = false; active = -1; }
+  function select(val) { input.value = val; input.dispatchEvent(new Event('change')); closeList(); }
+
+  root.querySelector('.combo-btn').addEventListener('click', () => { open ? closeList() : openList(); input.focus(); });
+  input.addEventListener('focus', () => openList(''));
+  input.addEventListener('click', () => openList(''));
+  input.addEventListener('input', () => { open = true; root.classList.add('open'); render(input.value); });
+  input.addEventListener('keydown', e => {
+    const nodes = [...list.querySelectorAll('.combo-item')];
+    if (e.key === 'ArrowDown') { e.preventDefault(); if (!open) openList(); active = Math.min((active + 1), (nodes.length - 1)); highlight(nodes); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); active = Math.max((active - 1), 0); highlight(nodes); }
+    else if (e.key === 'Enter') { if (open) { e.preventDefault(); const t = nodes[active]?.textContent || input.value; select(t); } }
+    else if (e.key === 'Escape') { closeList(); }
+  });
+
+  function highlight(nodes) {
+    nodes.forEach(n => n.classList.remove('active'));
+    if (active >= 0 && nodes[active]) { nodes[active].classList.add('active'); nodes[active].scrollIntoView({ block: 'nearest' }); }
+  }
+
+  document.addEventListener('click', e => { if (!root.contains(e.target)) closeList(); });
+
+  return {
+    setItems(arr) { items = [...arr]; render(input.value); },
+    get value() { return input.value; },
+    set value(v) { input.value = v; },
+    onChange(fn) { input.addEventListener('change', fn); },
+    focus() { input.focus(); }
+  };
+}
+
+// ====== Build Combos ======
+const buCombo = makeCombo('buCombo', 'buInput', 'buList', BU_OPTIONS);
+const bpCombo = makeCombo('bpCombo', 'bpInput', 'bpList', []);
+const senderCombo = makeCombo('senderCombo', 'senderInput', 'senderList', PARTY_OPTIONS);
+const receiverCombo = makeCombo('receiverCombo', 'receiverInput', 'receiverList', PARTY_OPTIONS);
+const adapterCombo = makeCombo(
+  'adapterCombo',
+  'adapterType',
+  'adapterList',
+  ADAPTER_OPTIONS
+);
+
+senderCombo.onChange(() => { generateName(); senderCombo.setItems(PARTY_OPTIONS); });
+receiverCombo.onChange(() => { generateName(); receiverCombo.setItems(PARTY_OPTIONS); });
+adapterCombo.onChange(() => generateName());
+
+buCombo.onChange(() => {
+  updateBPList();
+  generateName();
+});
+
+bpCombo.onChange(() => generateName());
+
+// ====== Name Generation ======
+function generateName() {
+  const type = document.getElementById('type').value;
+  if (type === "Package") {
+    const sr = document.getElementById("senderReceiverGroup");
+    if (sr) sr.style.display = "none";
+  }
+
+  const useGlobal = document.getElementById('useGlobal')?.checked ?? false;
+  const buWrap = document.getElementById('buCombo');
+  if (buWrap) buWrap.classList.toggle('hidden', !!useGlobal);
+
+  const BU = useGlobal ? 'Global' : (buCombo.value || 'Global');
+  const PROC = bpCombo.value || '';
+  const SND = senderCombo.value?.trim() || '';
+  const RCV = receiverCombo.value?.trim() || '';
+  const DESC = document.getElementById('desc').value || '';
+  const Content = document.getElementById('content')?.value;
+  const OBJECT = document.getElementById('object')?.value || '';
+
+  const IF_PREFIX = 'IF';
+  let name = '—';
+
+  if (type === 'Integration Flow') {
+    const parts = [IF_PREFIX, BU];
+    if (PROC) parts.push(PROC);
+    if (SND || RCV) {
+      const sndPart = SND || 'Src';
+      const rcvPart = RCV || 'Tgt';
+      parts.push(`${sndPart}_To_${rcvPart}`);
+    }
+    name = parts.join('_');
+    if (DESC) name += `_${DESC}`;
+  } else {
+    switch (type) {
+      case 'Package': name = `VG_${BU}_${PROC}${DESC ? "_" + DESC : ""}`; break;
+      case 'OData Service': name = `OD_${BU}_${PROC}_${SND}_To_${RCV}${DESC ? "_" + DESC : ""}`; break;
+      case 'Value Mapping': name = `VM_${DESC || 'Desc'}`; break;
+     
+      case 'Filter': name = `FT_${PROC || DESC || 'Desc'}`; break;
+      case 'Message Digest': name = `MD_${PROC || DESC || 'Desc'}`; break;
+      case 'Process': name = `IP_${PROC || DESC || 'Desc'}`; break;
+      case 'Local Process': name = `LIP_${PROC || DESC || 'Desc'}`; break;
+      case 'Request-Reply': name = `RR_${DESC || PROC || 'Desc'}`; break;
+      case 'Content Enricher': name = `CE_${DESC || PROC || 'Desc'}`; break;
+      case 'Aggregator': name = `AG_${PROC || DESC || 'Desc'}`; break;
+      case 'Gather': name = `Gather_${PROC || DESC || 'Desc'}`; break;
+      case 'Join': name = `Join_${PROC || DESC || 'Desc'}`; break;
+      case 'Sequential Multicasting': name = `SM_${PROC || DESC || 'Desc'}`; break;
+      case 'Parallel Multicasting': name = `PM_${PROC || DESC || 'Desc'}`; break;
+      case 'Router': name = `Route_${DESC || PROC || 'Condition'}`; break;
+	   
+	    case 'Process Call': {
+		  const pcProcess = document.getElementById('desc')?.value || 'Process';
+
+		  name = `PC_${pcProcess.replace(/\s+/g, '')}`;
+		  break;
+		}
+	  
+		case 'Script':
+		  const scriptLang = document.getElementById('scriptLang')?.value || '';
+		  const scriptName = scriptLang; // Groovy / Java
+		  const processName = DESC || PROC || 'Desc';
+		  name = `Script_${scriptName}_${processName}`;
+		  break;
+	case 'Mapping':
+		  const mapType = document.getElementById('mappingType')?.value || 'MM';
+		  const source = document.getElementById('sourceType')?.value || 'Source';
+		  const target = document.getElementById('targetType')?.value || 'Target';
+
+		  // Replace spaces with underscore (clean format)
+		  const cleanSource = source.replace(/\s+/g, '_');
+		  const cleanTarget = target.replace(/\s+/g, '_');
+
+		  name = `${mapType}_${cleanSource}_to_${cleanTarget}`;
+		  break;
+		 
+	  case 'Converter':
+		  const src = document.getElementById('convSource')?.value || 'JSON';
+		  const tgt = document.getElementById('convTarget')?.value || 'XML';
+		  const obj = document.getElementById('convObject')?.value || 'Object';
+
+		  const cleanObj = obj.replace(/\s+/g, '');
+
+		  name = `${src}_to_${tgt}_Converter_${cleanObj}`;
+		  break;
+	 case 'Send': {
+		  const desc = document.getElementById('sendDesc')?.value || 'Desc';
+
+		  name = `Send_${desc.replace(/\s+/g, '')}`;
+		  break;
+		}
+		
+	case 'Decryptor': {
+	  const key = document.getElementById('decryptKey')?.value || 'Key';
+	  name = `Decrypt_${key.replace(/\s+/g, '')}`;
+	  break;
+	}
+	
+case 'Connector': {
+  const adapter = document.getElementById('adapterType')?.value || 'Adapter';
+  const dir = document.getElementById('direction')?.value || 'Snd';
+  const desc = document.getElementById('connDesc')?.value || 'Desc';
+
+  name = `${adapter}_${dir}_${desc.replace(/\s+/g, '')}`;
+  break;
+}
+
+		
+		
+	case 'Write Variable': {
+  const typeVal = document.getElementById('varType')?.value || 'Type';
+  const descVal = document.getElementById('varDesc')?.value || 'Desc';
+
+  name = `Var_${typeVal}_${descVal.replace(/\s+/g, '')}`;
+  break;
+}
+
+	case 'Verifier': {
+	  const key = document.getElementById('verifyKey')?.value || 'Key';
+	  name = `Verify_${key.replace(/\s+/g, '')}`;
+	  break;
+	}
+
+	case 'Data Store Operation': {
+	  const op = document.getElementById('dsOperation')?.value || 'Operation';
+	  const proc = document.getElementById('dsProcess')?.value || 'Process';
+	  name = `DS_${op}_ ${proc}`;
+	  break;
+	}
+
+	case 'Queue': {
+	  const qDesc = document.getElementById('desc')?.value || 'Desc';
+	  name = `Queue_${qDesc}`;
+	  break;
+	}
+
+	case 'Encryptor': {
+	  const key = document.getElementById('encryptKey')?.value || 'Key';
+	  name = `Encrypt_${key.replace(/\s+/g, '')}`;
+	  break;
+	}
+		
+		
+	case 'Persist': {
+  const input = document.getElementById('desc');
+
+  // ✅ read value DIRECTLY from field (not from old variable)
+  const value = input ? input.value.trim() : "";
+
+  if (value.length > 0) {
+    name = `Persist_${value.replace(/\s+/g, '')}`;
+  } else {
+    name = "Persist_Desc";
+  }
+
+  break;
+}
+		
+		case 'Signer': {
+	  const key = document.getElementById('signKey')?.value || 'Key';
+	  name = `Sign_${key.replace(/\s+/g, '')}`;
+	  break;
+	}
+
+		
+		
+		
+		
+		
+	  case 'Splitter': {
+		  const method = document.getElementById('splitMethod')?.value || 'General';
+		  const desc = document.getElementById('desc')?.value || 'Desc';
+
+		  const cleanDesc = desc.replace(/\s+/g, '');
+
+		  name = `SP_${method}_${cleanDesc}`;
+		  break;
+		}
+		  
+		 case 'Persist': {
+  const value = document.getElementById('desc')?.value.trim();
+
+  if (value) {
+    name = `Persist_${value.replace(/\s+/g, '')}`;
+  } else {
+    name = "Persist_Desc";
+  }
+
+  break;
+}
+
+	case 'XML Validator': {
+	  const descVal = document.getElementById('desc')?.value || 'Desc';
+
+	  name = `XMLValidate_${descVal.replace(/\s+/g, '')}`;
+	  break;
+	}
+
+	 case 'Decoder': {
+		  const schema = document.getElementById('codecSchema')?.value || 'Base64';
+		  const process = document.getElementById('codecProcess')?.value || 'Process';
+
+		  name = `DC_${schema}_${process.replace(/\s+/g, '')}`;
+		  break;
+		}
+    
+    case 'Encoder': {
+		  const schema = document.getElementById('codecSchema')?.value || 'Base64';
+		  const process = document.getElementById('codecProcess')?.value || 'Process';
+
+		  name = `EC_${schema}_${process.replace(/\s+/g, '')}`;
+		  break;
+		}
+      case 'Content Modifier': name = `CM_${Content}_${OBJECT || 'Desc'}`; break;
+		default: name = `IF_${BU}_${PROC}${DESC ? "_" + DESC : ""}`; break;
+    }
+  }
+
+  document.getElementById('output').textContent = name;
+  setHint(type);
+}
+
+// ====== Event Listeners ======
+['type', 'sender', 'receiver', 'desc', 'content', 'object', 'useGlobal','scriptLang','mappingType','sourceType','targetType','convSource','convTarget','convObje','splitMethod','splitProcess','codecSchema','codecProcess','sendProcess','pcProcess','lpcCount','lpcProcess','codecSchema','codecProcess','sendDesc','persistProcess','varFields','decryptKey','encryptKey','signKey','verifyKey','connDesc','adapterType','direction','dsOperation','dsProcess'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    ['input', 'change'].forEach(evt => el.addEventListener(evt, () => {
+      generateName();
+      updateFieldVisibility();
+      if (id === 'useGlobal' || id === 'type') {
+        updateBPList();
+      }
+    }));
+  }
+});
+
+// ====== Copy with Toast ======
+function copyText() {
+  const v = document.getElementById('output').textContent;
+  if (v && v !== '—') {
+    navigator.clipboard.writeText(v).then(() => {
+      showToast('Copied: ' + v);
+    }).catch(() => {
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = v;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('Copied: ' + v);
+    });
+  }
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function resetForm() {
+  // 1. Clear all text inputs (including combo inputs)
+  document.querySelectorAll('input[type="text"]').forEach(i => { 
+    if (!i.disabled) i.value = ''; 
+  });
+
+  // 2. Reset all dropdowns to the first option
+  document.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+
+  // 3. Reset checkboxes
+  document.getElementById('useGlobal').checked = false;
+
+  // 4. Reset Combo-boxes values and lists
+  buCombo.value = '';
+  buCombo.setItems(BU_OPTIONS);
+  
+  bpCombo.value = '';
+  bpCombo.setItems([]);
+  
+  senderCombo.value = '';
+  senderCombo.setItems(PARTY_OPTIONS);
+  
+  receiverCombo.value = '';
+  receiverCombo.setItems(PARTY_OPTIONS);
+  
+  adapterCombo.value = '';
+  adapterCombo.setItems(ADAPTER_OPTIONS);
+
+  // 5. Reset Output and UI state
+  document.getElementById('output').textContent = '—';
+  updateFieldVisibility();
+  updateBPList();
+  setHint('');
+}
+
+// ====== Init ======
+updateFieldVisibility();
+generateName();
+
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0affcc6da2b4448',t:'MTc4MTM0MjA5MQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
